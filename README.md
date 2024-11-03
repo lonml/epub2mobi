@@ -7,4 +7,4 @@
 `python3 epub2mobi.py /path/to/source /path/to/destination`
 其中 /path/to/source 和 /path/to/destination 分别是源目录和目标目录的路径。
 ## 借鉴
-本脚本基于juanre/epub2mobi（https://github.com/juanre/epub2mobi）脚本，但其脚本长期未维护已不能在python最新版本下正常运行
+本脚本基于[juanre/epub2mobi](https://github.com/juanre/epub2mobi)脚本，但其脚本长期未维护已不能在python最新版本下正常运行
