@@ -9,7 +9,7 @@
 
 其中 /path/to/source 和 /path/to/destination 分别是源目录和目标目录的路径。
 
-在0.02版本中，在命令行中运行此脚本，可以使用如下命令：
+在0.1版本中，在命令行中运行此脚本，可以使用如下命令：
 
 `python3 epub2mobi.py /path/to/source /path/to/destination [number_of_threads]`
 
