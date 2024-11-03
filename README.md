@@ -1,0 +1,2 @@
+# epub2mobi
+用Python3运行该程序可将epub格式的电子书批量转换成mobi格式
