@@ -16,4 +16,7 @@
 其中 /path/to/source 和 /path/to/destination 分别是源目录和目标目录的路径，[number_of_threads] 是可选参数，用于指定线程池中的线程数，默认为 4。
 通过这种方式，你可以显著提高文件转换的速度，特别是在处理大量文件时。
 ## 借鉴
-本脚本基于[juanre/epub2mobi](https://github.com/juanre/epub2mobi)脚本，但其脚本长期未维护已不能在python最新版本下正常运行
+本脚本基于[juanre/epub2mobi](https://github.com/juanre/epub2mobi)脚本，但其脚本长期未维护已不能在python最新版本下正常运行。
+
+## 注意事项
+本脚本运行依赖calibre中的ebook-convert，因此需要系统已安装Calibre软件
