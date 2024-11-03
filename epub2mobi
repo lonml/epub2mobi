@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# version 0.02
+# version 0.1
 import os
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
