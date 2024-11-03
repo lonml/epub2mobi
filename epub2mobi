@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
-
+# version 0.02
 import os
 import subprocess
-from functools import reduce
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-def epub2mobi(fromdir, todir, ignore_if=None):
+def convert_epub_to_mobi(epub_path, mobi_path):
+    """Convert a single .epub file to .mobi format."""
+    try:
+        subprocess.run(['ebook-convert', epub_path, mobi_path], check=True)
+        print(f"Converted {epub_path} to {mobi_path}")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to convert {epub_path}: {e}")
+
+def epub2mobi(fromdir, todir, ignore_if=None, max_workers=4):
     """Look for .epub files in fromdir, convert them to .mobi and store 
     them in the flat directory todir unless their path includes any string
     present in the list ignore_if. 
@@ -16,33 +24,39 @@ def epub2mobi(fromdir, todir, ignore_if=None):
     if not os.path.exists(todir):
         os.makedirs(todir)
     
+    # Collect all .epub files to be converted
+    epub_files = []
     for root, dirs, files in os.walk(fromdir):
-        # Check if the current directory should be ignored
-        if ignore_if is not None:
-            if any(ig in root for ig in ignore_if):
-                continue
-        
+        if ignore_if is not None and any(ig in root for ig in ignore_if):
+            continue
         for file in files:
             name, ext = os.path.splitext(file)
             if ext.lower() == '.epub':
                 mobi_path = os.path.join(todir, f"{name}.mobi")
                 if not os.path.exists(mobi_path):
                     epub_path = os.path.join(root, file)
-                    try:
-                        subprocess.run(['ebook-convert', epub_path, mobi_path], check=True)
-                        print(f"Converted {epub_path} to {mobi_path}")
-                    except subprocess.CalledProcessError as e:
-                        print(f"Failed to convert {epub_path}: {e}")
+                    epub_files.append((epub_path, mobi_path))
+    
+    # Use a ThreadPoolExecutor to convert files in parallel
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(convert_epub_to_mobi, epub_path, mobi_path) for epub_path, mobi_path in epub_files]
+        
+        # Wait for all conversions to complete
+        for future in as_completed(futures):
+            future.result()  # This will raise an exception if the conversion failed
 
 if __name__ == '__main__':
     import sys
 
     fromdir = '.'
     todir = 'kindle'
+    max_workers = 4  # Number of threads to use
 
     if len(sys.argv) > 1:
         fromdir = sys.argv[1]
     if len(sys.argv) > 2:
         todir = sys.argv[2]
+    if len(sys.argv) > 3:
+        max_workers = int(sys.argv[3])
 
-    epub2mobi(fromdir, todir, ignore_if=['ninios'])
+    epub2mobi(fromdir, todir, ignore_if=['ninios'], max_workers=max_workers)
