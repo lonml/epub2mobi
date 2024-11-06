@@ -17,6 +17,7 @@
 通过这种方式，你可以显著提高文件转换的速度，特别是在处理大量文件时。
 
 0.2版本中添加了图形界面，除系统中预安装calibre外，还需要预安装pyton tk库，可以运行如下命令：
+
 `python epub2mobi_gui.py`
 ## 借鉴
 本脚本基于[juanre/epub2mobi](https://github.com/juanre/epub2mobi)脚本，但其脚本长期未维护已不能在python最新版本下正常运行。
